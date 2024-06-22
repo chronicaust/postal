@@ -25,7 +25,7 @@ class SMTPSender < BaseSender
   end
 
   def start
-    servers = @servers || self.class.smtp_relays || resolve_mx_records_for_domain || []
+    servers = @servers || self.class.smtp_relays || resolve_mx_records_for_domain[1...] || []
 
     servers.each do |server|
       server.endpoints.each do |endpoint|
