@@ -7,7 +7,7 @@ class SMTPSender < BaseSender
   # @param domain [String] the domain to send mesages to
   # @param source_ip_address [IPAddress] the IP address to send messages from
   # @param log_id [String] an ID to use when logging requests
-  def initialize(domain, source_ip_address = nil, servers: nil, log_id: nil, rcpt_to: nil)
+  def initialize(domain, source_ip_address = nil, servers: nil, log_id: nil, rcpt_to: nil, skip_primary_mx=true)
     super()
     @domain = domain
     @source_ip_address = source_ip_address
@@ -25,7 +25,7 @@ class SMTPSender < BaseSender
   end
 
   def start
-    servers = @servers || self.class.smtp_relays || resolve_mx_records_for_domain || []
+    servers = @servers || self.class.smtp_relays || (skip_primary_mx ? resolve_mx_records_for_domain[1...] : resolve_mx_records_for_domain) || []
 
     servers.each do |server|
       server.endpoints.each do |endpoint|
