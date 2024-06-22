@@ -2,9 +2,9 @@
 # frozen_string_literal: true
 
 require_relative "../lib/postal/config"
-require "trilogy"
+require "mysql2"
 
-client = Trilogy::Client.new(
+client = Mysql2::Client.new(
   host: Postal::Config.main_db.host,
   username: Postal::Config.main_db.username,
   password: Postal::Config.main_db.password,
