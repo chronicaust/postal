@@ -12,6 +12,7 @@ class SMTPSender < BaseSender
     @domain = domain
     @source_ip_address = source_ip_address
     @rcpt_to = rcpt_to
+    @skip_primary_mx = skip_primary_mx
 
     # An array of servers to forcefully send the message to
     @servers = servers
@@ -25,7 +26,7 @@ class SMTPSender < BaseSender
   end
 
   def start
-    servers = @servers || self.class.smtp_relays || (skip_primary_mx ? resolve_mx_records_for_domain[1...] : resolve_mx_records_for_domain) || []
+    servers = @servers || self.class.smtp_relays || (@skip_primary_mx ? resolve_mx_records_for_domain[1...] : resolve_mx_records_for_domain) || []
 
     servers.each do |server|
       server.endpoints.each do |endpoint|
