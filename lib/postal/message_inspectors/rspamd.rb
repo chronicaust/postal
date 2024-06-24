@@ -17,7 +17,7 @@ module Postal
         response["symbols"].each_value do |symbol|
           next if symbol["description"].blank?
 
-          inspection.spam_checks << SpamCheck.new(symbol["name"], symbol["score"], symbol["description"])
+          inspection.spam_checks << SpamCheck.new(symbol["name"], symbol["score"], symbol["description"].to_s.first(250))
         end
       rescue Error => e
         inspection.spam_checks << SpamCheck.new("ERROR", 0, e.message)

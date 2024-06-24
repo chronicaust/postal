@@ -19,8 +19,6 @@ gem "klogger-logger"
 gem "konfig-config", "~> 3.0"
 gem "mail"
 gem 'mysql2'
-# gem "trilogy"
-# gem "activerecord-trilogy-adapter"
 gem "nifty-utils"
 gem "nilify_blanks"
 gem "nio4r"
