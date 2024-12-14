@@ -1,0 +1,46 @@
+version: 2
+
+postal:
+  web_hostname: postal.dieseltms.com
+  web_protocol: https
+  smtp_hostname: postal.dieseltms.com
+
+main_db:
+  host: 127.0.0.1
+  username: root
+  password: postal
+  database: postal
+
+message_db:
+  host: 127.0.0.1
+  username: root
+  password: postal
+  prefix: postal
+
+smtp_server:
+  default_bind_address: "::"
+
+dns:
+  mx_records:
+    - mx1.postal.dieseltms.com
+    - mx2.postal.dieseltms.com
+  spf_include: spf.postal.dieseltms.com
+  return_path_domain: rp.postal.dieseltms.com
+  route_domain: routes.postal.dieseltms.com
+  track_domain: track.postal.dieseltms.com
+
+smtp:
+  # Specify an SMTP server that can be used to send messages from the Postal management
+  # system to users. You can configure this to use a Postal mail server once the
+  # your installation has been set up.
+  host: 127.0.0.1
+  port: 2525
+  username: # Complete when Postal is running and you can
+  password: # generate the credentials within the interface.
+  from_name: Postal
+  from_address: postal@dieseltms.com
+
+rails:
+  # This is generated automatically by the config initialization. It should be a random
+  # string unique to your installation.
+  secret_key: {{secretkey}}

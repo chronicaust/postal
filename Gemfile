@@ -18,7 +18,7 @@ gem "kaminari"
 gem "klogger-logger"
 gem "konfig-config", "~> 3.0"
 gem "mail"
-gem 'mysql2'
+gem 'postgresql'
 gem "nifty-utils"
 gem "nilify_blanks"
 gem "nio4r"
