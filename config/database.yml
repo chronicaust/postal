@@ -1,10 +1,13 @@
 default: &default
-  adapter: postgresql
+  adapter: mysql2
   reconnect: true
+  encoding: <%= Postal::Config.main_db.encoding %>
   pool: <%= Postal::Config.main_db.pool_size %>
-  user: <%= Postal::Config.main_db.username %>
+  username: <%= Postal::Config.main_db.username %>
   password: <%= Postal::Config.main_db.password %>
-  database: "<%= Postal::Config.main_db.database %>"
+  host: <%= Postal::Config.main_db.host %>
+  port: <%= Postal::Config.main_db.port %>
+  database: <%= Postal::Config.main_db.database %>
 
 development:
   <<: *default

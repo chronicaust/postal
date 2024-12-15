@@ -18,7 +18,7 @@ gem "kaminari"
 gem "klogger-logger"
 gem "konfig-config", "~> 3.0"
 gem "mail"
-gem 'postgresql'
+gem 'mysql2'
 gem "nifty-utils"
 gem "nilify_blanks"
 gem "nio4r"
@@ -30,6 +30,8 @@ gem "secure_headers"
 gem "sentry-rails"
 gem "turbolinks", "~> 5"
 gem "webrick"
+gem "mutex_m"
+gem "abbrev"
 
 group :oidc do
   # These are gems which are needed for OpenID connect. They are only required by the application

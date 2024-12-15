@@ -37,8 +37,8 @@ module Postal
     config.action_view.field_error_proc = proc { |t, _| t }
 
     # Load the tracking server middleware
-    require "tracking_middleware"
-    config.middleware.insert_before ActionDispatch::HostAuthorization, TrackingMiddleware
+    # require "tracking_middleware"
+    # config.middleware.insert_before ActionDispatch::HostAuthorization, TrackingMiddleware
 
     config.hosts << Postal::Config.postal.web_hostname
 

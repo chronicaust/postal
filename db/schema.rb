@@ -11,7 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2024_03_11_205229) do
-  create_table "additional_route_endpoints", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "additional_route_endpoints", id: :integer, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.integer "route_id"
     t.string "endpoint_type"
     t.integer "endpoint_id"
@@ -19,7 +19,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_11_205229) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "address_endpoints", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "address_endpoints", id: :integer, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.integer "server_id"
     t.string "uuid"
     t.string "address"
@@ -28,7 +28,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_11_205229) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "authie_sessions", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "authie_sessions", id: :integer, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.string "token"
     t.string "browser_id"
     t.integer "user_id"
@@ -61,7 +61,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_11_205229) do
     t.index ["user_id"], name: "index_authie_sessions_on_user_id"
   end
 
-  create_table "credentials", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "credentials", id: :integer, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.integer "server_id"
     t.string "key"
     t.string "type"
@@ -74,7 +74,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_11_205229) do
     t.string "uuid"
   end
 
-  create_table "domains", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "domains", id: :integer, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.integer "server_id"
     t.string "uuid"
     t.string "name"
@@ -103,7 +103,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_11_205229) do
     t.index ["uuid"], name: "index_domains_on_uuid", length: 8
   end
 
-  create_table "http_endpoints", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "http_endpoints", id: :integer, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.integer "server_id"
     t.string "uuid"
     t.string "name"
@@ -120,7 +120,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_11_205229) do
     t.integer "timeout"
   end
 
-  create_table "ip_addresses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "ip_addresses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.integer "ip_pool_id"
     t.string "ipv4"
     t.string "ipv6"
@@ -130,7 +130,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_11_205229) do
     t.integer "priority"
   end
 
-  create_table "ip_pool_rules", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "ip_pool_rules", id: :integer, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.string "uuid"
     t.string "owner_type"
     t.integer "owner_id"
@@ -141,7 +141,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_11_205229) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "ip_pools", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "ip_pools", id: :integer, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.string "name"
     t.string "uuid"
     t.datetime "created_at"
@@ -150,14 +150,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_11_205229) do
     t.index ["uuid"], name: "index_ip_pools_on_uuid", length: 8
   end
 
-  create_table "organization_ip_pools", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "organization_ip_pools", id: :integer, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.integer "organization_id"
     t.integer "ip_pool_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "organization_users", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "organization_users", id: :integer, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.integer "organization_id"
     t.integer "user_id"
     t.datetime "created_at"
@@ -166,7 +166,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_11_205229) do
     t.string "user_type"
   end
 
-  create_table "organizations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "organizations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.string "uuid"
     t.string "name"
     t.string "permalink"
@@ -182,7 +182,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_11_205229) do
     t.index ["uuid"], name: "index_organizations_on_uuid", length: 8
   end
 
-  create_table "queued_messages", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "queued_messages", id: :integer, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.integer "server_id"
     t.integer "message_id"
     t.string "domain"
@@ -201,7 +201,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_11_205229) do
     t.index ["server_id"], name: "index_queued_messages_on_server_id"
   end
 
-  create_table "routes", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "routes", id: :integer, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.string "uuid"
     t.integer "server_id"
     t.integer "domain_id"
@@ -216,13 +216,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_11_205229) do
     t.index ["token"], name: "index_routes_on_token", length: 6
   end
 
-  create_table "scheduled_tasks", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "scheduled_tasks", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.string "name"
     t.datetime "next_run_after", precision: nil
     t.index ["name"], name: "index_scheduled_tasks_on_name", unique: true
   end
 
-  create_table "servers", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "servers", id: :integer, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.integer "organization_id"
     t.string "uuid"
     t.string "name"
@@ -257,7 +257,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_11_205229) do
     t.index ["uuid"], name: "index_servers_on_uuid", length: 8
   end
 
-  create_table "smtp_endpoints", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "smtp_endpoints", id: :integer, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.integer "server_id"
     t.string "uuid"
     t.string "name"
@@ -271,13 +271,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_11_205229) do
     t.datetime "updated_at"
   end
 
-  create_table "statistics", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "statistics", id: :integer, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.bigint "total_messages", default: 0
     t.bigint "total_outgoing", default: 0
     t.bigint "total_incoming", default: 0
   end
 
-  create_table "track_certificates", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "track_certificates", id: :integer, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.string "domain"
     t.text "certificate"
     t.text "intermediaries"
@@ -291,7 +291,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_11_205229) do
     t.index ["domain"], name: "index_track_certificates_on_domain", length: 8
   end
 
-  create_table "track_domains", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "track_domains", id: :integer, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.string "uuid"
     t.integer "server_id"
     t.integer "domain_id"
@@ -307,7 +307,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_11_205229) do
     t.text "excluded_click_domains"
   end
 
-  create_table "user_invites", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "user_invites", id: :integer, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.string "uuid"
     t.string "email_address"
     t.datetime "expires_at"
@@ -316,7 +316,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_11_205229) do
     t.index ["uuid"], name: "index_user_invites_on_uuid", length: 12
   end
 
-  create_table "users", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "users", id: :integer, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.string "uuid"
     t.string "first_name"
     t.string "last_name"
@@ -336,14 +336,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_11_205229) do
     t.index ["uuid"], name: "index_users_on_uuid", length: 8
   end
 
-  create_table "webhook_events", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "webhook_events", id: :integer, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.integer "webhook_id"
     t.string "event"
     t.datetime "created_at"
     t.index ["webhook_id"], name: "index_webhook_events_on_webhook_id"
   end
 
-  create_table "webhook_requests", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "webhook_requests", id: :integer, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.integer "server_id"
     t.integer "webhook_id"
     t.string "url"
@@ -359,7 +359,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_11_205229) do
     t.index ["locked_by"], name: "index_webhook_requests_on_locked_by"
   end
 
-  create_table "webhooks", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "webhooks", id: :integer, charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.integer "server_id"
     t.string "uuid"
     t.string "name"
@@ -373,7 +373,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_11_205229) do
     t.index ["server_id"], name: "index_webhooks_on_server_id"
   end
 
-  create_table "worker_roles", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "worker_roles", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.string "role"
     t.string "worker"
     t.datetime "acquired_at", precision: nil
