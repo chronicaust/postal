@@ -32,7 +32,6 @@ gem "turbolinks", "~> 5"
 gem "webrick"
 gem "mutex_m"
 gem "abbrev"
-gem "bigdecimal", "1.3.5"
 
 group :oidc do
   # These are gems which are needed for OpenID connect. They are only required by the application
