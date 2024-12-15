@@ -178,7 +178,7 @@ module Postal
         if options[:count]
           result.first["count"]
         else
-          result.to_a
+          result.is_a?(Array) ? result : ([] << result)
         end
       end
 

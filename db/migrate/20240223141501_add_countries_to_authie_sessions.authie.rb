@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # This migration comes from authie (originally 20230627165500)
-class AddCountriesToAuthieSessions < ActiveRecord::Migration[6.1]
+class AddCountriesToAuthieSessions < ActiveRecord::Migration[7.0]
 
   def change
     add_column :authie_sessions, :login_ip_country, :string

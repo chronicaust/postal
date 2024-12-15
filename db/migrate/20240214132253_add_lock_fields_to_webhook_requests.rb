@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AddLockFieldsToWebhookRequests < ActiveRecord::Migration[6.1]
+class AddLockFieldsToWebhookRequests < ActiveRecord::Migration[7.0]
 
   def change
     add_column :webhook_requests, :locked_by, :string

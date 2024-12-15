@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CreateScheduledTasks < ActiveRecord::Migration[6.1]
+class CreateScheduledTasks < ActiveRecord::Migration[7.0]
 
   def change
     create_table :scheduled_tasks do |t|

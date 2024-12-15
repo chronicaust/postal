@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CreateWorkerRoles < ActiveRecord::Migration[6.1]
+class CreateWorkerRoles < ActiveRecord::Migration[7.0]
 
   def change
     create_table :worker_roles do |t|
