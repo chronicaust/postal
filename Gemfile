@@ -24,7 +24,7 @@ gem "nilify_blanks"
 gem "nio4r"
 gem "prometheus-client"
 gem "puma"
-gem "rails", "= 7.0.8.1"
+gem "rails", "= 7.1.5.1"
 gem "resolv"
 gem "secure_headers"
 gem "sentry-rails"
@@ -32,6 +32,7 @@ gem "turbolinks", "~> 5"
 gem "webrick"
 gem "mutex_m"
 gem "abbrev"
+gem "bigdecimal", "1.3.5"
 
 group :oidc do
   # These are gems which are needed for OpenID connect. They are only required by the application
