@@ -26,7 +26,7 @@ class SMTPSender < BaseSender
   end
 
   def start
-    servers = (@skip_primary_mx ? resolve_mx_records_for_domain[1...] : resolve_mx_records_for_domain) || @servers || self.class.smtp_relays || []
+    servers = ((@skip_primary_mx && resolve_mx_records_for_domain.size > 1) ? resolve_mx_records_for_domain[1...] : resolve_mx_records_for_domain) || @servers || self.class.smtp_relays || []
 
     servers.each do |server|
       server.endpoints.each do |endpoint|
