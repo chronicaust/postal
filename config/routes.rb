@@ -81,6 +81,11 @@ Rails.application.routes.draw do
     resources :ip_addresses
   end
 
+  post   "diesel/servers" => "diesel#create_server"
+  patch  "diesel/servers" => "diesel#update_server"
+  delete "diesel/servers" => "diesel#delete_server"
+  get    "diesel/servers" => "diesel#get_server"
+
   get "settings" => "user#edit"
   patch "settings" => "user#update"
   post "persist" => "sessions#persist"
