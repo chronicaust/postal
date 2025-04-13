@@ -22,21 +22,34 @@ class DieselController < ApplicationController
           name: @server.permalink,
           type: "SMTP"
         )
-        @http_endpoint = @server.http_endpoints.create(
+
+        @webhook = @server.webhooks.create(
           name: "Diesel",
           url: "https://dieseltms.com/postal/inbound/#{@server.permalink}",
-          encoding: "BodyAsJSON",
-          format: "Hash",
-          strip_replies: false,
-          include_attachments: true,
-          timeout: 20
+          # encoding: "BodyAsJSON",
+          # format: "Hash",
+          all_events: true,
+          enabled: true,
+          sign: true
         )
+
+      # @http_endpoint = @server.http_endpoints.create(
+        #   name: "Diesel",
+        #   url: "https://dieseltms.com/postal/inbound/#{@server.permalink}",
+        #   encoding: "BodyAsJSON",
+        #   format: "Hash",
+        #   strip_replies: true,
+        #   include_attachments: true,
+        #   timeout: 20
+        # )
+
         @smtp_endpoint = @server.smtp_endpoints.create(
           name: "Diesel",
           hostname: "postal.dieseltms.com",
           ssl_mode: "Auto",
           port: 2525
         )
+
         @route = @server.routes.create(
           domain_id: @domain.id,
           endpoint_id: @smtp_endpoint.id,
@@ -46,7 +59,7 @@ class DieselController < ApplicationController
           mode: "Endpoint"
         )
 
-        render json: @server.as_json(include: [:domains, :credentials, :http_endpoints, :smtp_endpoints, :routes])
+        render json: @server.as_json(include: [:domains, :credentials, :webhooks, :smtp_endpoints, :routes])
       else
         render json: { error: "Failed to create domain. Please check the domain name and try again." }, status: :unprocessable_entity, status: 422
       end
@@ -68,7 +81,7 @@ class DieselController < ApplicationController
     @server = Server.joins(:domains).find_by("servers.id": params[:server][:id], "domains.id": params[:domain][:id])
     if @server.present?
       @domain = @server.domains.first
-      render json: @server.as_json(include: [:domains, :credentials, :http_endpoints, :smtp_endpoints, :routes])
+      render json: @server.as_json(include: [:domains, :credentials, :webhooks, :smtp_endpoints, :routes])
       # if @domain.verified?
       # else
       #   render json: { error: "Failed to verify domain. Please check your DNS records." }, status: :unprocessable_entity, status: 422
@@ -78,11 +91,37 @@ class DieselController < ApplicationController
     end
   end
 
+  def get_message
+    hsh = {}
+    msg = @server.message_db.message(message_params[:id])
+    hsh[:message_id] = msg.message_id
+    hsh[:in_reply_to] = msg.headers["in-reply-to"]
+    hsh[:thread_id] = msg.headers["x-diesel-thread-id"]
+    hsh[:body] = msg.html_body
+    hsh[:attachments] = msg.attachments.map { [it.filename, it.read] }
+    hsh[:threat] = msg.threat
+    hsh[:spam] = msg.spam
+    hsh[:from] = msg.mail_from
+    hsh[:to] = msg.rcpt_to
+    hsh[:status] = msg.status
+    hsh[:headers] = msg.headers
+    hsh[:hkeys] = msg.headers.keys
+    render json: hsh.as_json
+  end
+
+  def message_params
+    @message_params ||=
+      params.
+        require(:message).
+        permit(:id)
+  end
+
   def server_params
     @server_params ||=
       params.
         require(:server).
         permit(
+          :id, # account.postal_server_id
           :name, # account.name
           :permalink, # account.id
           :mode # "Live"

@@ -41,6 +41,14 @@ module Postal
     config.middleware.insert_before ActionDispatch::HostAuthorization, TrackingMiddleware
 
     config.hosts << Postal::Config.postal.web_hostname
+    config.allowed_smtp_auth_attempts = 3
+
+    config.action_controller.perform_caching = true
+    config.action_mailer.perform_caching = true
+    config.cache_store = :file_store, "#{Rails.root}/tmp/cache"
+    config.public_file_server.headers = {
+      "Cache-Control" => "public, max-age=172800"
+    }
 
     unless Postal::Config.logging.rails_log_enabled?
       config.logger = Logger.new("/dev/null")

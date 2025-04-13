@@ -124,16 +124,24 @@ module SMTPServer
               else
                 # We're not using the proxy protocol so we already know the client's IP
                 client = Client.new(client_ip_address)
-                if Postal::Config.smtp_server.log_connections?
-                  client.logger&.debug "Connection opened from #{client_ip_address}"
+                attempts = Rails.cache.read("smtp_auth/#{client_ip_address}").to_i
+                client.logger&.warn "SMTP SERVER - CLIENT IP #{client_ip_address} ATTEMPTS: #{attempts} - #{attempts > Rails.configuration.allowed_smtp_auth_attempts ? "REJECT" : "ACCEPT"}"
+                if attempts > Rails.configuration.allowed_smtp_auth_attempts
+                  Rails.cache.write("smtp_auth/#{client_ip_address}", attempts += 1, expires_in: 1.day)
+                  new_io.close
+                  nil
+                else
+                  if Postal::Config.smtp_server.log_connections?
+                    client.logger&.debug "Connection opened from #{client_ip_address}"
+                  end
+                  # We know who the client is, welcome them.
+                  client.logger&.debug "Client identified as #{client_ip_address}"
+                  new_io.print("220 #{Postal::Config.postal.smtp_hostname} ESMTP Postal/#{client.trace_id}")
+                  # Register the client and its socket with nio4r
+                  monitor = @io_selector.register(new_io, :r)
+                  monitor.value = client
                 end
-                # We know who the client is, welcome them.
-                client.logger&.debug "Client identified as #{client_ip_address}"
-                new_io.print("220 #{Postal::Config.postal.smtp_hostname} ESMTP Postal/#{client.trace_id}")
               end
-              # Register the client and its socket with nio4r
-              monitor = @io_selector.register(new_io, :r)
-              monitor.value = client
             rescue StandardError => e
               # If something goes wrong, log as appropriate and disconnect the client
               if defined?(Sentry)

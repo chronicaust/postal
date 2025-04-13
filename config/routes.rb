@@ -7,6 +7,12 @@ Rails.application.routes.draw do
   match "/api/v1/messages/message" => "legacy_api/messages#message", via: [:get, :post, :patch, :put]
   match "/api/v1/messages/deliveries" => "legacy_api/messages#deliveries", via: [:get, :post, :patch, :put]
 
+  post   "diesel/get_message" => "diesel#get_message"
+  post   "diesel/servers" => "diesel#create_server"
+  patch  "diesel/servers" => "diesel#update_server"
+  delete "diesel/servers" => "diesel#delete_server"
+  get    "diesel/servers" => "diesel#get_server"
+
   scope "org/:org_permalink", as: "organization" do
     resources :domains, only: [:index, :new, :create, :destroy] do
       match :verify, on: :member, via: [:get, :post]
@@ -80,11 +86,6 @@ Rails.application.routes.draw do
   resources :ip_pools do
     resources :ip_addresses
   end
-
-  post   "diesel/servers" => "diesel#create_server"
-  patch  "diesel/servers" => "diesel#update_server"
-  delete "diesel/servers" => "diesel#delete_server"
-  get    "diesel/servers" => "diesel#get_server"
 
   get "settings" => "user#edit"
   patch "settings" => "user#update"

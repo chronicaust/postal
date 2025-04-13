@@ -25,8 +25,14 @@ module SMTPServer
       @previous_cr_present = nil
 
       if @ip_address
-        check_ip_address
-        @state = :welcome
+        attempts = Rails.cache.read("smtp_auth/#{@ip_address}").to_i
+        if attempts > Rails.configuration.allowed_smtp_auth_attempts
+          transaction_reset
+          "221 Closing Connection"
+        else
+          check_ip_address
+          @state = :welcome
+        end
       else
         @state = :preauth
       end
@@ -231,13 +237,21 @@ module SMTPServer
     end
 
     def authenticate(password)
-      if @credential = Credential.where(type: "SMTP", key: password).first
-        @credential.use
-        "235 Granted for #{@credential.server.organization.permalink}/#{@credential.server.permalink}"
-      else
-        logger&.warn "Authentication failure for #{@ip_address}"
-        increment_error_count("invalid-credentials")
+      attempts = Rails.cache.read("smtp_auth/#{@ip_address}").to_i
+      logger&.warn "ATTEMPTS for #{@ip_address}: #{attempts}"
+      if attempts > Rails.configuration.allowed_smtp_auth_attempts
+        Rails.cache.write("smtp_auth/#{@ip_address}", attempts += 1, expires_in: 1.day)
         "535 Invalid credential"
+      else
+        if @credential = Credential.find_by(type: "SMTP", key: password)
+          @credential.use
+          "235 Granted for #{@credential.server.organization.permalink}/#{@credential.server.permalink}"
+        else
+          Rails.cache.write("smtp_auth/#{@ip_address}", attempts += 1, expires_in: 1.day)
+          logger&.warn "Authentication failure for #{@ip_address}"
+          increment_error_count("invalid-credentials")
+          "535 Invalid credential"
+        end
       end
     end
 
@@ -399,6 +413,8 @@ module SMTPServer
           @credential.use
           rcpt_to(data)
         else
+          attempts = Rails.cache.read("smtp_auth/#{@ip_address}").to_i
+          Rails.cache.write("smtp_auth/#{@ip_address}", attempts += 1, expires_in: 1.day)
           increment_error_count("authentication-required")
           logger&.warn "Authentication failure for #{@ip_address}"
           "530 Authentication required"
