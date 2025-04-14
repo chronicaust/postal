@@ -34,10 +34,12 @@ class WebhookDeliveryService
   end
 
   def send_request
-    @http_result = Postal::HTTP.post(@webhook_request.url,
-                                     sign: true,
-                                     json: @payload,
-                                     timeout: 5)
+    @http_result = Postal::HTTP.post(
+      @webhook_request.url,
+      sign: true,
+      json: @payload,
+      timeout: 30
+    )
 
     @success = (@http_result[:code] >= 200 && @http_result[:code] < 300)
   end

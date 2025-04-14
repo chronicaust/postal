@@ -1,5 +1,5 @@
 class DieselController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [:create_server, :update_server, :delete_server, :get_server]
+  skip_before_action :verify_authenticity_token, only: [:create_server, :update_server, :delete_server, :get_server, :get_message]
   skip_before_action :login_required
   before_action :verify_password
 
@@ -78,7 +78,7 @@ class DieselController < ApplicationController
   end
   
   def get_server
-    @server = Server.joins(:domains).find_by("servers.id": params[:server][:id], "domains.id": params[:domain][:id])
+    @server = Server.joins(:domains).find_by("servers.id": server_params[:id], "domains.id": domain_params[:id])
     if @server.present?
       @domain = @server.domains.first
       render json: @server.as_json(include: [:domains, :credentials, :webhooks, :smtp_endpoints, :routes])
@@ -92,13 +92,14 @@ class DieselController < ApplicationController
   end
 
   def get_message
+    @server = Server.find_by("servers.id": server_params[:id])
+    msg = @server.message_db.message(message_params[:id].to_i)
     hsh = {}
-    msg = @server.message_db.message(message_params[:id])
     hsh[:message_id] = msg.message_id
     hsh[:in_reply_to] = msg.headers["in-reply-to"]
     hsh[:thread_id] = msg.headers["x-diesel-thread-id"]
     hsh[:body] = msg.html_body
-    hsh[:attachments] = msg.attachments.map { [it.filename, it.read] }
+    hsh[:attachments] = msg.attachments&.map { [it.filename, it.read] }
     hsh[:threat] = msg.threat
     hsh[:spam] = msg.spam
     hsh[:from] = msg.mail_from
@@ -129,7 +130,7 @@ class DieselController < ApplicationController
   end
 
   def domain_params
-    @domain_params ||= params.require(:domain).permit(:name)
+    @domain_params ||= params.require(:domain).permit(:id, :name)
   end
 
   def verify_password
