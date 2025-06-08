@@ -4,6 +4,7 @@ class DieselController < ApplicationController
   before_action :verify_password
 
   def create_server
+    @org = Organization.first
     @server = @org.servers.build(server_params)
     @server.privacy_mode = false
     @server.log_smtp_data = false
@@ -134,7 +135,7 @@ class DieselController < ApplicationController
   end
 
   def verify_password
-    return if %w[23.122.17.161 54.226.25.129 172.31.0.244].include?(request.remote_ip) && params[:password] == "AtsyUApEZUyTTvTVCfOu"
+    return if %w[23.122.17.161 34.197.0.215 127.0.0.1].include?(request.remote_ip) && params[:password] == "AtsyUApEZUyTTvTVCfOu"
 
     render json: { error: "Unauthorized" }, status: :unauthorized
   end
