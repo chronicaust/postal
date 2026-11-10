@@ -1,3 +1,5 @@
+require "base64"
+
 class DieselController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:create_server, :update_server, :delete_server, :get_server, :get_message]
   skip_before_action :login_required
@@ -100,7 +102,15 @@ class DieselController < ApplicationController
     hsh[:in_reply_to] = msg.headers["in-reply-to"]
     hsh[:thread_id] = msg.headers["x-diesel-thread-id"]
     hsh[:body] = msg.html_body
-    hsh[:attachments] = msg.attachments&.map { [it.filename, it.read] }
+    hsh[:attachments] = msg.attachments.map do |attachment|
+      content = attachment.decoded
+      {
+        filename: attachment.filename,
+        content_type: attachment.mime_type,
+        size: content.bytesize,
+        data: Base64.strict_encode64(content)
+      }
+    end
     hsh[:threat] = msg.threat
     hsh[:spam] = msg.spam
     hsh[:from] = msg.mail_from
