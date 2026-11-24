@@ -20,5 +20,18 @@ describe Postal::MessageDB::Message do
       descriptions = message.spam_checks.to_h { |check| [check["code"], check["description"]] }
       expect(descriptions).to eq("SHORT" => "Short description", "LONG" => ("é" * 240) + ("界" * 10))
     end
+
+    it "decodes a binary spam check description before applying the character limit" do
+      prefix = "a" + ("é" * 249)
+      check = Postal::SpamCheck.new("BINARY", 0, prefix.b)
+      check.description << "界".b
+      inspection = Postal::MessageInspection.new(message, :incoming)
+      inspection.spam_checks << check
+      allow(Postal::MessageInspection).to receive(:scan).with(message, :incoming).and_return(inspection)
+
+      message.inspect_message
+
+      expect(message.spam_checks.first.fetch("description")).to eq(prefix)
+    end
   end
 end

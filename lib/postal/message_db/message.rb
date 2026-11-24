@@ -524,7 +524,10 @@ module Postal
         update(inspected: true, spam_score: result.spam_score, threat: result.threat, threat_details: result.threat_message)
 
         # Add any spam details into the spam checks database
-        spam_check_rows = result.spam_checks.map { |check| [id, check.code, check.score, check.description.first(250)] }
+        spam_check_rows = result.spam_checks.map do |check|
+          description = check.description.to_s.dup.force_encoding(Encoding::UTF_8).scrub
+          [id, check.code, check.score, description.first(250)]
+        end
         database.insert_multi(:spam_checks, [:message_id, :code, :score, :description], spam_check_rows)
 
         # Return the result

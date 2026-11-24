@@ -8,7 +8,7 @@ module Postal
     def initialize(code, score, description = nil)
       @code = code
       @score = score
-      @description = description.to_s.first(250)
+      @description = description.to_s.dup
     end
 
     def to_hash
