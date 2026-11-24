@@ -9,20 +9,6 @@ namespace :postal do
     end
   end
 
-  desc "Widen spam check descriptions by running pending message database migrations on all servers"
-  task fix_spam_check_descriptions: :environment do
-    failures = 0
-    Server.find_each do |server|
-      puts "Running message database migrations for server #{server.id}"
-      server.message_db.provisioner.migrate
-    rescue StandardError => e
-      failures += 1
-      warn "Message database migration failed for server #{server.id}: #{e.class}: #{e.message}"
-    end
-
-    abort "Message database migrations failed for #{failures} server(s)" if failures.positive?
-  end
-
   desc "Generate configuration documentation"
   task generate_config_docs: :environment do
     require "konfig/exporters/env_vars_as_markdown"
